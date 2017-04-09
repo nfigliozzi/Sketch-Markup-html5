@@ -1,0 +1,39 @@
+{
+  "name" : "Sketch To html",
+  "author" : "Nicolas Figliozzi",
+  "identifier" : "com.example.sketch.027c7117-f430-4423-94b9-f5b3bb87fb06",
+  "version" : "0.1",
+  "description" : "Html helper for sketch. By now traduce text to p / folders with tags and class/ images to empty img",
+  "authorEmail" : "hola@nicolasfigliozzi.com.ar",
+  "homepage": "http://nicolasfigliozzi.com.ar",
+  "help": "",
+  "icon": "",
+  "channel": "",
+  "compatibleVersion": 3,
+  "menu" : {
+    "title" : "✒️Sketch To html ----> Vs.: 🐜",
+    "isRoot": false,
+    "items" : [
+      "to.html",
+      "set.tag"
+    ]
+  },
+  "commands" : [
+    {
+      "script" : "to.html.cocoascript",
+      "name" : "Set HTML Tag",
+      "handler" : "setTag",
+      "shortcut" : "ctrl h",
+      "identifier" : "set.tag"
+    },
+    {
+      "script" : "to.html.cocoascript",
+      "name" : "Export HTML",
+      "handlers" : {
+        "run" : "onRun"
+      },
+      "shortcut" : "ctrl shift h",
+      "identifier" : "to.html"
+    }
+  ]
+}

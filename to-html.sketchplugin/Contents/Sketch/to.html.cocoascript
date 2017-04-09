@@ -1,0 +1,46 @@
+var pluginName = "To Html";
+
+@import './libraries/htmlTags.cocoascript'
+@import './libraries/writeHtml.cocoascript'
+
+function onRun(context) {
+  var sketch = context.api(),
+      document = context.document,
+      documentName = context.document.displayName(),
+      selection = sketch.selectedDocument.selectedLayers;
+  
+  html += 'Document name: ' +documentName+ '\n';
+
+  if (selection.isEmpty) {
+    [document showMessage:"Select an Artboard to export"]
+  } else {
+    writeHTMLs(selection);
+    sketch.alert(html,pluginName);
+  }
+}
+function setTag(context) {
+  var selected = context.selection,
+      document = context.document
+
+  // Show an error message if document has no element selected.
+  if (!selected.count()) {
+    [document showMessage:"Please select an element."]
+    return
+  }
+
+  // Show the selector to set a tag.
+  var selectedTag = setTagSelector(pluginName, "Select a Html5 tag")
+  if (selectedTag !== null) {
+    var selectedIndex = selectedTag.indexOfSelectedItem()
+    
+    if (selectedIndex >= 0) {
+      var tagNames = getHtmlTags();
+      [document showMessage:"Rename as <"+tagNames[selectedIndex]+">"]
+
+      for (var i=0; i<selected.count(); i++) {
+        var layer = selected[i];
+        layer.setName(tagNames[selectedIndex]);
+      }
+    }
+  }
+}

@@ -1,0 +1,63 @@
+var html = '',
+    childCount = 0;
+//Write HTML code for groups
+function writeGroup(group){
+  var tag, Class, groupName = group.name.toLowerCase().split(/[\ .]+/);
+  //if name is a  group type html Tag
+  if (isTagType(groupName[0])){
+    tag = groupName[0];
+    groupName.splice(0, 1);
+    if (groupName.length){
+      Class = ' class="'+groupName.join(' ')+'"';}
+    else{
+      Class = '';}
+  }
+  else{
+    tag = "div"; 
+    Class = ' class="'+groupName.join(' ')+'"';
+  }
+
+  html += ('  ').repeat(childCount)+'<'+tag+Class+'>\n';
+  childCount++;
+  writeChildrens(group);
+  childCount--;
+  html += ('  ').repeat(childCount)+'</'+tag+'>\n';
+}
+
+//Write HTML code for texts (by now only p)
+function writeText(text){
+  html += ('  ').repeat(childCount)+'<p>'+text.text+'</p>\n';
+}
+
+//Write HTML code for images (by now only empty img)
+function writeImg(image){
+  html += ('  ').repeat(childCount)+'<img src="'+image.name+'"</>\n';
+}
+
+//The itiration Code (the magic)
+function writeChildrens(layers){
+  if (!childCount) html += '//Html from folders:\n\n';
+  
+  layers.iterate(function(layer) {
+    var object = layer.sketchObject;
+    if (object.isVisible()){ 
+      if(layer.isGroup) writeGroup(layer);
+      else if(layer.isText) writeText(layer);
+      else if(layer.isImage) writeImg(layer);
+    }
+  });
+}
+
+//The initializer
+function writeHTMLs(selection){
+  selection.iterate(function(artboard) { 
+    var hasHtmlHeader;
+    if(artboard.isArtboard){
+      html += 'Artboard: '+artboard.name+'\n\n<head>\n</head>\n<body>\n';
+      hasHtmlHeader = true;
+    }
+    writeChildrens(artboard);
+    
+    if (hasHtmlHeader){html += '\n</body>\n';}
+  });
+}
